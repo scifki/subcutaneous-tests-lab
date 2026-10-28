@@ -1,0 +1,42 @@
+.F..F.                                                                   [100%]
+================================== FAILURES ===================================
+______________ test_register_saves_user_and_sends_welcome_email _______________
+
+service = <users.UserService object at 0x0000017C3C230C20>
+repository = <users.InMemoryUserRepository object at 0x0000017C3C230D70>
+mailer = <test_users.FakeMailer object at 0x0000017C3C230EC0>
+
+    def test_register_saves_user_and_sends_welcome_email(service, repository, mailer):
+        service.register("anna@example.com", "secret123")
+        saved = repository.get("anna@example.com")
+        assert saved is not None
+        assert saved["password_hash"] != "secret123"
+>       assert mailer.sent == [("anna@example.com", "Добро пожаловать!")]
+E       AssertionError: assert [] == [('anna@examp...пожаловать!')]
+E         
+E         Right contains one more item: ('anna@example.com', 'Добро пожаловать!')
+E         Use -v to get more diff
+
+tests\test_users.py:42: AssertionError
+____________________ test_register_rejects_duplicate_email ____________________
+
+service = <users.UserService object at 0x0000017C3C163CE0>
+repository = <users.InMemoryUserRepository object at 0x0000017C3C163BB0>
+mailer = <test_users.FakeMailer object at 0x0000017C3C163A80>
+
+    def test_register_rejects_duplicate_email(service, repository, mailer):
+        service.register("anna@example.com", "secret123")
+        with pytest.raises(UserAlreadyExists):
+            service.register("anna@example.com", "another123")
+        assert repository.count() == 1
+>       assert mailer.sent == [("anna@example.com", "Добро пожаловать!")]
+E       AssertionError: assert [] == [('anna@examp...пожаловать!')]
+E         
+E         Right contains one more item: ('anna@example.com', 'Добро пожаловать!')
+E         Use -v to get more diff
+
+tests\test_users.py:67: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_users.py::test_register_saves_user_and_sends_welcome_email
+FAILED tests/test_users.py::test_register_rejects_duplicate_email - Assertion...
+2 failed, 4 passed in 0.05s

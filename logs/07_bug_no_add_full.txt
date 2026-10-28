@@ -1,0 +1,32 @@
+.F..F.                                                                   [100%]
+================================== FAILURES ===================================
+______________ test_register_saves_user_and_sends_welcome_email _______________
+
+service = <users.UserService object at 0x000002417C160C20>
+repository = <users.InMemoryUserRepository object at 0x000002417C160D70>
+mailer = <test_users.FakeMailer object at 0x000002417C160EC0>
+
+    def test_register_saves_user_and_sends_welcome_email(service, repository, mailer):
+        service.register("anna@example.com", "secret123")
+        saved = repository.get("anna@example.com")
+>       assert saved is not None
+E       assert None is not None
+
+tests\test_users.py:40: AssertionError
+____________________ test_register_rejects_duplicate_email ____________________
+
+service = <users.UserService object at 0x000002417C093CE0>
+repository = <users.InMemoryUserRepository object at 0x000002417C093BB0>
+mailer = <test_users.FakeMailer object at 0x000002417C093A80>
+
+    def test_register_rejects_duplicate_email(service, repository, mailer):
+        service.register("anna@example.com", "secret123")
+>       with pytest.raises(UserAlreadyExists):
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE UserAlreadyExists
+
+tests\test_users.py:64: Failed
+=========================== short test summary info ===========================
+FAILED tests/test_users.py::test_register_saves_user_and_sends_welcome_email
+FAILED tests/test_users.py::test_register_rejects_duplicate_email - Failed: D...
+2 failed, 4 passed in 0.05s

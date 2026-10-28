@@ -1,0 +1,18 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+______________ test_register_saves_user_and_sends_welcome_email _______________
+
+service = <users.UserService object at 0x000001D4DFA8CC20>
+repository = <users.InMemoryUserRepository object at 0x000001D4DFA8CD70>
+mailer = <test_users.FakeMailer object at 0x000001D4DFA8CEC0>
+
+    def test_register_saves_user_and_sends_welcome_email(service, repository, mailer):
+        service.register("anna@example.com", "secret123")
+        saved = repository.get("anna@example.com")
+>       assert saved is not None
+E       assert None is not None
+
+tests\test_users.py:40: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_users.py::test_register_saves_user_and_sends_welcome_email
+1 failed, 1 passed in 0.04s
